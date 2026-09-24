@@ -1,0 +1,50 @@
+{
+  "projects": [
+    {
+      "name": "Customer Insights Portal",
+      "owner": "Avery Chen",
+      "status": "active",
+      "recentActivity": "Published the beta feedback dashboard and triaged the first round of usability findings.",
+      "priority": "high",
+      "dueDate": "2026-10-15"
+    },
+    {
+      "name": "Mobile Checkout Refresh",
+      "owner": "Jordan Smith",
+      "status": "blocked",
+      "recentActivity": "Payment gateway certification is paused while the vendor reviews the latest compliance evidence.",
+      "priority": "high",
+      "dueDate": "2026-11-02"
+    },
+    {
+      "name": "Data Warehouse Migration",
+      "owner": "Priya Nair",
+      "status": "on-hold",
+      "recentActivity": "Migration runbook is complete; production cutover is waiting for the holiday freeze window to pass.",
+      "priority": "medium"
+    },
+    {
+      "name": "Partner API Stabilization",
+      "owner": "Miguel Santos",
+      "status": "active",
+      "recentActivity": "Reduced webhook retry failures after deploying improved request validation and tracing.",
+      "priority": "medium",
+      "dueDate": "2026-10-28"
+    },
+    {
+      "name": "Security Training Rollout",
+      "owner": "Nadia Brooks",
+      "status": "done",
+      "recentActivity": "Completed organization-wide training launch and archived the final completion report.",
+      "priority": "low",
+      "dueDate": "2026-09-30"
+    },
+    {
+      "name": "Support Knowledge Base Cleanup",
+      "owner": "Elliot Rivera",
+      "status": "onhold",
+      "recentActivity": "Content audit is queued behind the customer escalation response workstream.",
+      "priority": "low"
+    }
+  ]
+}

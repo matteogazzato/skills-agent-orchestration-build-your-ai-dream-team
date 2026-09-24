@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Pulse</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header__container">
+      <div class="header__brand">
+        <svg class="header__logo" aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+        </svg>
+        <h1 class="header__title">Project Pulse</h1>
+      </div>
+      <p class="header__subtitle">Real-time status, health, and activity tracker across active team projects</p>
+    </div>
+  </header>
+
+  <!-- Main Dashboard Container -->
+  <main class="dashboard">
+    <section class="dashboard__bar" aria-label="Dashboard overview">
+      <div class="dashboard__summary">
+        <span class="dashboard__summary-label">Status Overview:</span>
+        <span class="dashboard__summary-text" id="project-summary">Loading project status from data store...</span>
+      </div>
+    </section>
+
+    <!-- Mount Point for Project Cards -->
+    <section class="dashboard__grid" id="projects-container" aria-label="Project cards list" aria-live="polite">
+      <!-- 
+        DESIGN EXAMPLE / STATIC PREVIEW CARD:
+        Coder: JS dynamic rendering will populate this container from project-data.json.
+        You can clear/replace this static element when rendering live data.
+      -->
+      <article class="project-card project-card--preview" aria-label="Design Preview Card: Design System Alignment">
+        <div class="project-card__header">
+          <h2 class="project-card__title">Design System Alignment</h2>
+          <span class="badge badge--active" aria-label="Status: Active">
+            <span class="badge__dot" aria-hidden="true"></span>
+            <span class="badge__text">Active</span>
+          </span>
+        </div>
+
+        <p class="project-card__owner">
+          <svg class="project-card__icon" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span>Owner: <strong>Mona Lisa</strong></span>
+        </p>
+
+        <div class="project-card__meta">
+          <span class="priority priority--high" aria-label="Priority: High">
+            <span class="priority__indicator" aria-hidden="true">▲</span>
+            <span class="priority__text">High Priority</span>
+          </span>
+          <span class="project-card__due" aria-label="Due date: October 15, 2026">
+            <svg class="project-card__icon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <span>Due: 2026-10-15</span>
+          </span>
+        </div>
+
+        <div class="project-card__activity">
+          <span class="project-card__activity-label">Recent Activity</span>
+          <p class="project-card__activity-text">Completed visual spec review and accessibility color palette verification.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- Empty State Container -->
+    <div class="dashboard__state dashboard__state--empty" id="dashboard-empty" hidden>
+      <svg class="dashboard__state-icon" aria-hidden="true" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+      <h3 class="dashboard__state-title">No Active Projects</h3>
+      <p class="dashboard__state-desc">There are currently no project cards to display in the system.</p>
+    </div>
+
+    <!-- Error State Container -->
+    <div class="dashboard__state dashboard__state--error" id="dashboard-error" hidden>
+      <svg class="dashboard__state-icon" aria-hidden="true" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+      <h3 class="dashboard__state-title">Data Loading Error</h3>
+      <p class="dashboard__state-desc">Unable to fetch project data from <code>project-data.json</code>. Please ensure the data file exists and is correctly formatted.</p>
+    </div>
+  </main>
+
+  <!-- HTML Template for dynamic card rendering by Coder -->
+  <template id="project-card-template">
+    <article class="project-card">
+      <div class="project-card__header">
+        <h2 class="project-card__title" data-slot="name"></h2>
+        <span class="badge" data-slot="status-badge">
+          <span class="badge__dot" aria-hidden="true"></span>
+          <span class="badge__text" data-slot="status-text"></span>
+        </span>
+      </div>
+
+      <p class="project-card__owner">
+        <svg class="project-card__icon" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span>Owner: <strong data-slot="owner"></strong></span>
+      </p>
+
+      <div class="project-card__meta">
+        <span class="priority" data-slot="priority-badge">
+          <span class="priority__indicator" aria-hidden="true">●</span>
+          <span class="priority__text" data-slot="priority-text"></span>
+        </span>
+        <span class="project-card__due" data-slot="due-container">
+          <svg class="project-card__icon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          <span>Due: <span data-slot="due-date"></span></span>
+        </span>
+      </div>
+
+      <div class="project-card__activity">
+        <span class="project-card__activity-label">Recent Activity</span>
+        <p class="project-card__activity-text" data-slot="recent-activity"></p>
+      </div>
+    </article>
+  </template>
+
+  <footer class="footer">
+    <div class="footer__container">
+      <p>Project Pulse Dashboard &bull; Designed for clear visibility &amp; rapid updates</p>
+    </div>
+  </footer>
+
+  <!-- 
+    Data-fetching & dynamic rendering script placeholder.
+    Coder will populate fetch and DOM wiring logic (e.g. in app.js or inline).
+  -->
+  <script>
+    const projectContainer = document.querySelector("#projects-container");
+    const projectTemplate = document.querySelector("#project-card-template");
+    const emptyState = document.querySelector("#dashboard-empty");
+    const errorState = document.querySelector("#dashboard-error");
+    const projectSummary = document.querySelector("#project-summary");
+    const dateFormatter = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+
+    const knownStatuses = new Set(["active", "blocked", "on-hold", "onhold", "done"]);
+    const knownPriorities = new Set(["high", "medium", "low"]);
+
+    function normalizeToken(value) {
+      return String(value || "").trim().toLowerCase();
+    }
+
+    function formatLabel(value) {
+      const normalizedValue = normalizeToken(value);
+
+      if (!normalizedValue) {
+        return "Unknown";
+      }
+
+      return normalizedValue
+        .split(/[-\s]+/)
+        .filter(Boolean)
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+    }
+
+    function formatPriorityLabel(value) {
+      return `${formatLabel(value)} Priority`;
+    }
+
+    function formatDueDate(value) {
+      if (!value) {
+        return "";
+      }
+
+      const date = new Date(`${value}T00:00:00`);
+
+      if (Number.isNaN(date.getTime())) {
+        return String(value);
+      }
+
+      return dateFormatter.format(date);
+    }
+
+    function setVisibilityForState(state) {
+      const shouldShowCards = state === "ready";
+
+      projectContainer.hidden = !shouldShowCards;
+      emptyState.hidden = state !== "empty";
+      errorState.hidden = state !== "error";
+    }
+
+    function fillText(card, slotName, value) {
+      const element = card.querySelector(`[data-slot="${slotName}"]`);
+
+      if (element) {
+        element.textContent = value || "";
+      }
+    }
+
+    function renderProjectCard(project) {
+      const card = projectTemplate.content.firstElementChild.cloneNode(true);
+      const status = normalizeToken(project.status);
+      const priority = normalizeToken(project.priority);
+      const statusClass = knownStatuses.has(status) ? status : "unknown";
+      const priorityClass = knownPriorities.has(priority) ? priority : "low";
+      const statusText = formatLabel(project.status);
+      const priorityText = formatPriorityLabel(project.priority);
+
+      fillText(card, "name", project.name);
+      fillText(card, "owner", project.owner);
+      fillText(card, "status-text", statusText);
+      fillText(card, "priority-text", priorityText);
+      fillText(card, "recent-activity", project.recentActivity);
+
+      const statusBadge = card.querySelector('[data-slot="status-badge"]');
+      if (statusBadge) {
+        statusBadge.classList.add(`badge--${statusClass}`);
+        statusBadge.setAttribute("aria-label", `Status: ${statusText}`);
+      }
+
+      const priorityBadge = card.querySelector('[data-slot="priority-badge"]');
+      if (priorityBadge) {
+        priorityBadge.classList.add(`priority--${priorityClass}`);
+        priorityBadge.setAttribute("aria-label", `Priority: ${formatLabel(project.priority)}`);
+      }
+
+      const dueContainer = card.querySelector('[data-slot="due-container"]');
+      const dueDate = formatDueDate(project.dueDate);
+
+      if (dueContainer) {
+        if (dueDate) {
+          dueContainer.hidden = false;
+          dueContainer.setAttribute("aria-label", `Due date: ${dueDate}`);
+          fillText(card, "due-date", dueDate);
+        } else {
+          dueContainer.hidden = true;
+        }
+      }
+
+      return card;
+    }
+
+    function renderProjects(projects) {
+      projectContainer.replaceChildren();
+
+      if (projects.length === 0) {
+        projectSummary.textContent = "Showing 0 projects";
+        setVisibilityForState("empty");
+        return;
+      }
+
+      const cards = projects.map(renderProjectCard);
+      projectContainer.append(...cards);
+      projectSummary.textContent = `Showing ${projects.length} ${projects.length === 1 ? "project" : "projects"}`;
+      setVisibilityForState("ready");
+    }
+
+    async function loadProjects() {
+      try {
+        const response = await fetch("./project-data.json");
+
+        if (!response.ok) {
+          throw new Error(`Unable to load project data: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        if (!data || !Array.isArray(data.projects)) {
+          throw new Error("Project data must include a top-level projects array.");
+        }
+
+        renderProjects(data.projects);
+      } catch (error) {
+        console.error(error);
+        projectContainer.replaceChildren();
+        projectSummary.textContent = "Unable to load project status.";
+        setVisibilityForState("error");
+      }
+    }
+
+    loadProjects();
+  </script>
+</body>
+</html>
